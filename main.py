@@ -1,8 +1,6 @@
 import time
-from sympy import symbols, Eq, solve
 import numpy as np
 import matplotlib.pyplot as plt
-import random
 import sys
 import json
 
@@ -28,40 +26,6 @@ def uwb_range_offset(uwb_range):
     temp = uwb_range
     return temp
 
-
-# def find3DPosition(r1, r2, r3, a1, b1, c1, a2, b2, c2, a3, b3, c3):
-#     x = symbols('x', real=True)
-#     y = symbols('y', real=True)
-#     z = symbols('z', real=True)
-
-#     a = Eq((x-a1)**2 + (y-b1)**2 + (z-c1)**2, r1**2)
-#     b = Eq((x-a2)**2 + (y-b2)**2 + (z-c2)**2, r2**2)
-#     c = Eq((x-a3)**2 + (y-b3)**2 + (z-c3)**2, r3**2)
-
-#     sol = solve((a, b, c), (x, y, z))
-
-#     global valX
-#     global valY
-#     global valXtemp
-#     global valYtemp
-
-#     if len(sol) == 0:
-#         valX = valXtemp
-#         valY = valYtemp
-#     else:
-#         valX = sol[0][0]
-#         valY = sol[0][1]
-#         valXtemp = valX
-#         valYtemp = valY
-
-#     if valX > 1000:
-#         valX = 1000
-#     if valY > 1000:
-#         valY = 1000
-
-    # print("x =", valX)
-    # print("y =", valY)
-   
 
 def kalman_xy(x, P, measurement, R,
               motion = np.matrix('0. 0. 0. 0.').T,
@@ -121,7 +85,6 @@ def kalman(x, P, measurement, R, motion, Q, F, H):
 
     return x, P
 
-import numpy as np
 
 def trilateration(positions, distances):
     # Get the number of anchors
@@ -149,9 +112,6 @@ def trilateration(positions, distances):
 
 def main():
     
-
-    
-
     x_kalman = np.matrix('0. 0. 0. 0.').T 
     P = np.matrix(np.eye(4))*1000 # initial uncertainty
     R = 0.01**2 
@@ -160,14 +120,12 @@ def main():
     global valXtemp
     global valYtemp
 
-    # generating random data values
     x = []
     y = []
 
     
     # enable interactive mode
     plt.ion()
-    
     # creating subplot and figure
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -183,23 +141,6 @@ def main():
     range_anc84 = 0.0
     range_anc82 = 0.0
     range_anc83 = 0.0
-
-   
-    
- 
-    # mlist = [[{'A': '82', 'R' : '0.97'},{'A': '83', 'R' : '0.97'},{'A': '84', 'R' : '0.97'}],[{'A': '82', 'R' : '0.5'},{'A': '83', 'R' : '0.5'},{'A': '84', 'R' : '0.9'}]]
-   
- 
-
-    # node_count = 0
-    # list = read_data()
-    # print(list)
-    # list = mlist[0]
-    # Set the range of x-axis
-    # plt.xlim(0, 837)
-    # Set the range of y-axis
-    # plt.ylim(0, 665)
-
 
     while True:
 
@@ -245,47 +186,11 @@ def main():
             valY = valYtemp
         
        
-
-        # for one in list:
-        #     if one["A"] == "82":
-        #         a1_range = uwb_range_offset(float(one["R"]))
-                
-        #         # a1_range = random.uniform(3,7)
-        #         # print(a1_range)
-        #         # print()
-        #         node_count += 1
-                
-
-        #     if one["A"] == "83":
-        #         a2_range = uwb_range_offset(float(one["R"]))
-            
-        #         # a2_range = random.uniform(3,7)
-        #         # print(a2_range)
-        #         node_count += 1
-                
-
-        #     if one["A"] == "84":
-        #         a3_range = uwb_range_offset(float(one["R"]))
-                
-        #         # a3_range = random.uniform(3,7)
-        #         # print(a3_range)
-        #         node_count += 1
                 
         range_anc82 = a1_range
         range_anc83 = a2_range
         range_anc84 = a3_range
-        # range_anc1 = random.uniform(3.00,10.00)
-        # range_anc2 = random.uniform(3.00,10.00)
-        # range_anc3 = random.uniform(3.00,10.00)
 
-
-        #         # print(range_anc3)
-
-        
-        # if node_count == 3:
-        
-        # find3DPosition(range_anc1*100, range_anc2*100,
-        #                 range_anc3*100, 0, 0, 0, 837, 0, 0, 0, 665, 0)
         
         # Example usage
         anchors = np.array([(0, 0), (835, 0), (0, 665)])  # Anchor positions
@@ -294,9 +199,7 @@ def main():
 
 
         estimated_position = trilateration(anchors, distances)
-        # print("Estimated position:", estimated_position)
-                
-        # print(x_kalman)
+
 
         valX = estimated_position[0]
         valY = estimated_position[1]
@@ -326,15 +229,7 @@ def main():
         elif valYkalman < 0:
             valYkalman = valYtemp
 
-        # print(a1_range)
-        # print(a2_range)
-        # print(a3_range)
-
-        # positionData = { "x" : valXkalman, "y" : valYkalman }
-        # print(int(valXkalman))
-        # print(int(valYkalman))
-        # testx = random.randint(0,835)
-        # testy = random.randint(0,667)
+    
 
         valXtemp = valXkalman
         valYtemp = valYkalman
@@ -349,23 +244,15 @@ def main():
 
         
         print(valXkalman, valYkalman)
-        # print(testx,testy)
+
         time.sleep(0.1)
 
-        # print(valXkalman)
-        
-
-    
-
     print("\n")
     print("\n")
     print("\n")
 
-     
-            
 
 if __name__ == '__main__':
     main()
 
 
-# "{"links":[{"A":"83","R":"2.5"},{"A":"84","R":"2.0"},{"A":"82","R":"2.3"}]}"
