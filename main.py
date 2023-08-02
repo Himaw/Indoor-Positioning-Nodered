@@ -27,6 +27,8 @@ def uwb_range_offset(uwb_range):
     return temp
 
 
+   
+
 def kalman_xy(x, P, measurement, R,
               motion = np.matrix('0. 0. 0. 0.').T,
               Q = np.matrix(np.eye(4))):
@@ -85,6 +87,7 @@ def kalman(x, P, measurement, R, motion, Q, F, H):
 
     return x, P
 
+import numpy as np
 
 def trilateration(positions, distances):
     # Get the number of anchors
@@ -112,6 +115,9 @@ def trilateration(positions, distances):
 
 def main():
     
+
+    
+
     x_kalman = np.matrix('0. 0. 0. 0.').T 
     P = np.matrix(np.eye(4))*1000 # initial uncertainty
     R = 0.01**2 
@@ -126,6 +132,7 @@ def main():
     
     # enable interactive mode
     plt.ion()
+    
     # creating subplot and figure
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -142,6 +149,8 @@ def main():
     range_anc82 = 0.0
     range_anc83 = 0.0
 
+
+
     while True:
 
          # Set the range of x-axis
@@ -151,11 +160,10 @@ def main():
 
 
         list = sys.stdin.readline()
-        # list = int(list)
-        # print(list)
-
         json_object = json.loads(list)
         links = json_object["links"]
+
+        
         if len(links) == 3:
             
             if float(links[0]["A"]) == 82:
@@ -181,36 +189,34 @@ def main():
             elif float(links[2]["A"]) == 84:
                 a3_range = uwb_range_offset(float(links[2]["R"]))
 
+    
+                    
+            range_anc82 = a1_range
+            range_anc83 = a2_range
+            range_anc84 = a3_range
+   
+            # Example usage
+            anchors = np.array([(0, 0), (835, 0), (0, 665)])  # Anchor positions
+            distances = np.array([range_anc82*100, range_anc83*100, range_anc84*100])  # Distance measurements
+
+
+            estimated_position = trilateration(anchors, distances)
+         
+
+            valX = estimated_position[0]
+            valY = estimated_position[1]
+
+            if valX > 835:
+                valX = valXtemp
+            elif valX < 0:
+                valX = valXtemp
+            if valY > 665:
+                valY = valYtemp
+            elif valY < 0:
+                valY = valYtemp
+
         else:
             valX = valXtemp
-            valY = valYtemp
-        
-       
-                
-        range_anc82 = a1_range
-        range_anc83 = a2_range
-        range_anc84 = a3_range
-
-        
-        # Example usage
-        anchors = np.array([(0, 0), (835, 0), (0, 665)])  # Anchor positions
-        distances = np.array([range_anc82*100, range_anc83*100, range_anc84*100])  # Distance measurements
-        # distances = np.array([343, 597, 897])  # Distance measurements
-
-
-        estimated_position = trilateration(anchors, distances)
-
-
-        valX = estimated_position[0]
-        valY = estimated_position[1]
-
-        if valX > 835:
-            valX = valXtemp
-        elif valX < 0:
-            valX = valXtemp
-        if valY > 665:
-            valY = valYtemp
-        elif valY < 0:
             valY = valYtemp
 
 
@@ -229,7 +235,7 @@ def main():
         elif valYkalman < 0:
             valYkalman = valYtemp
 
-    
+ 
 
         valXtemp = valXkalman
         valYtemp = valYkalman
@@ -244,13 +250,18 @@ def main():
 
         
         print(valXkalman, valYkalman)
-
         time.sleep(0.1)
 
+        
+
+    
+
     print("\n")
     print("\n")
     print("\n")
 
+     
+            
 
 if __name__ == '__main__':
     main()
