@@ -27,7 +27,7 @@ def uwb_range_offset(uwb_range):
     return temp
 
 
-   
+
 
 def kalman_xy(x, P, measurement, R,
               motion = np.matrix('0. 0. 0. 0.').T,
@@ -114,9 +114,6 @@ def trilateration(positions, distances):
 
 
 def main():
-    
-
-    
 
     x_kalman = np.matrix('0. 0. 0. 0.').T 
     P = np.matrix(np.eye(4))*1000 # initial uncertainty
