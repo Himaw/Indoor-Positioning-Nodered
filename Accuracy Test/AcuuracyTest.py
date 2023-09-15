@@ -2,14 +2,13 @@ import math
 
 
 
-
 # Generate random average point coordinates
-avg_x, avg_y = 424.1107692, 117.565641
+avg_x, avg_y = 174.2	,380.6
 
 
 
 # Generate random ground truth point coordinates
-gt_x, gt_y = 339, 37
+gt_x, gt_y =175, 338
 
 # Calculate Euclidean distance
 distance = math.sqrt((avg_x - gt_x)**2 + (avg_y - gt_y)**2)

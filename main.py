@@ -131,9 +131,14 @@ def main():
     plt.ion()
     
     # creating subplot and figure
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    line1, = ax.plot(x, y, marker='o', color='g',markersize=15)
+    img = plt.imread("/Users/himasarawarnakulasuriya/Desktop/IndoorNodered/Indoor-Positioning-Nodered/Map_matplotlib/room12.jpg")
+    fig, ax = plt.subplots()
+    ax.imshow(img, extent=[0, 835, 0, 665])
+
+
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111)
+    line1, = ax.plot(x, y, marker='o', color='g',markersize=9)
     line2, = ax.plot(0, 0, marker='o', color='r',markersize=14)
     line3, = ax.plot(837, 0, marker='o', color='r',markersize=14)
     line4, = ax.plot(0, 665, marker='o', color='r',markersize=14)
