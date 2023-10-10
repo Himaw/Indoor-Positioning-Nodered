@@ -35,11 +35,13 @@ def trilateration(positions, distances):
     A = np.zeros((num_anchors - 1, 2))
     b = np.zeros(num_anchors - 1)
 
+    
+
     for i in range(num_anchors - 1):
         A[i, 0] = 2 * (positions[i + 1, 0] - positions[0, 0])
         A[i, 1] = 2 * (positions[i + 1, 1] - positions[0, 1])
         b[i] = distances[0]**2 - distances[i + 1]**2 - positions[0, 0]**2 + positions[i + 1, 0]**2 - positions[0, 1]**2 + positions[i + 1, 1]**2
-
+   
     # Solve the linear system of equations
     result = np.linalg.lstsq(A, b, rcond=None)
 

@@ -131,7 +131,7 @@ def main():
     plt.ion()
     
     # creating subplot and figure
-    img = plt.imread("/Users/himasarawarnakulasuriya/Desktop/IndoorNodered/Indoor-Positioning-Nodered/Map_matplotlib/room12.jpg")
+    img = plt.imread("/Users/himasarawarnakulasuriya/Desktop/IndoorNodered/Indoor-Positioning-Nodered/Map_matplotlib/room_map.png")
     fig, ax = plt.subplots()
     ax.imshow(img, extent=[0, 835, 0, 665])
 
